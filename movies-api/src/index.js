@@ -1,4 +1,7 @@
 const express = require('express');
+const slash = require('express-slash');
+const morgan = require('morgan');
+
 const app = express();
 
 const { config } = require('./config/index');
@@ -8,9 +11,15 @@ const notFoundHandler = require('./utils/middleware/notFoundHandler');
 
 const { logErrors, errorHandler, wrapErrors } = require('./utils/middleware/errorHandler');
 
+app.enable('strict routing');
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('tiny'));
 
 moviesApi(app);
+
+app.use(slash())
 
 app.use(notFoundHandler);
 
