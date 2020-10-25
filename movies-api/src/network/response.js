@@ -1,5 +1,3 @@
-const { config } = require('../config');
-
 function success(req, res, message = 'Done', status = 200) {
     res.status(status).send({
         error: false,
@@ -8,11 +6,7 @@ function success(req, res, message = 'Done', status = 200) {
     });
 }
 
-function error(req, res, message = 'Internal Server Error', status = 500, details) {
-    if (config.api.dev) {
-        console.error(details);
-    }
-
+function error(req, res, message = 'Internal Server Error', status = 500) {
     res.status(status).send({
         error: true,
         status: status,
