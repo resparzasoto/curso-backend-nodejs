@@ -13,11 +13,11 @@ function moviesApi(app) {
     router.get('/:id', getMovie);
     router.post('/', createMovie);
     router.put('/:id', updateMovie);
+    router.delete('/:id', deleteMovie);
 
     async function getMovies(req, res, next) {
-        const { tags } = req.query;
         try {
-            const movies = await moviesService.getMovies({ tags });
+            const movies = await moviesService.getMovies(req.query);
 
             response.success(req, res, movies, 200);
         } catch (error) {
@@ -26,9 +26,8 @@ function moviesApi(app) {
     }
 
     async function getMovie(req, res, next) {
-        const { id } = req.params;
         try {
-            const movie = await moviesService.getMovie(id);
+            const movie = await moviesService.getMovie(req.params);
 
             response.success(req, res, movie, 200);
         } catch (error) {
@@ -37,23 +36,30 @@ function moviesApi(app) {
     }
 
     async function createMovie(req, res, next) {
-        const { body: movie } = req;
         try {
-            const createdMovie = await moviesService.createMovie(movie);
+            const createdMovieId = await moviesService.createMovie(req);
 
-            response.success(req, res, createdMovie, 201);
+            response.success(req, res, createdMovieId, 201);
         } catch (error) {
             next(error);
         }
     }
 
     async function updateMovie(req, res, next) {
-        const { body: movie } = req;
-        const { id } = req.params;
         try {
-            const updatedMovie = await moviesService.updateMovie(id, movie);
+            const updatedMovieId = await moviesService.updateMovie(req.params, req);
 
-            response.success(req, res, updatedMovie, 200);
+            response.success(req, res, updatedMovieId, 200);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async function deleteMovie(req, res, next) {
+        try {
+            const deleteMovieId = await moviesService.deleteMovie(req.params);
+
+            response.success(req, res, deleteMovieId, 200);
         } catch (error) {
             next(error);
         }
