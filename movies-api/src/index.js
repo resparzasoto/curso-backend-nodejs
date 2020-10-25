@@ -2,14 +2,20 @@ const express = require('express');
 const app = express();
 
 const { config } = require('./config/index');
+
 const moviesApi = require('./api/routes/movies');
-const { logErrors, errorHandler } = require('./utils/middlewares/errorHandler');
+const notFoundHandler = require('./utils/middlewares/notFoundHandler');
+
+const { logErrors, errorHandler, wrapErrors } = require('./utils/middlewares/errorHandler');
 
 app.use(express.json());
 
 moviesApi(app);
 
+app.use(notFoundHandler);
+
 app.use(logErrors);
+app.use(wrapErrors);
 app.use(errorHandler);
 
 app.listen(config.api.port, function () {

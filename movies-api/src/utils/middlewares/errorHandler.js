@@ -1,5 +1,15 @@
+const Boom = require('@hapi/Boom');
+
 const { config } = require('../../config');
 const response = require('../../network/response');
+
+function wrapErrors(err, req, res, next) {
+    if (!err.isBoom) {
+        next(Boom.badImplementation(err));
+    }
+
+    next(err);
+}
 
 function logErrors(err, req, res, next) {
     if (config.api.dev) {
@@ -9,10 +19,15 @@ function logErrors(err, req, res, next) {
 }
 
 function errorHandler(err, req, res, next) { //eslint-disable-line
-    response.error(req, res, err.message, err.status)
+    const {
+        output: { statusCode, payload }
+    } = err;
+
+    response.error(req, res, payload, statusCode);
 }
 
 module.exports = {
     logErrors,
+    wrapErrors,
     errorHandler
 };
