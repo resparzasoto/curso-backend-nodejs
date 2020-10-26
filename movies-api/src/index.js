@@ -1,6 +1,8 @@
 const express = require('express');
 const slash = require('express-slash');
 const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
 
 const app = express();
 
@@ -15,11 +17,13 @@ app.enable('strict routing');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
+app.use(cors());
 app.use(morgan('tiny'));
 
 moviesApi(app);
 
-app.use(slash())
+app.use(slash());
 
 app.use(notFoundHandler);
 
