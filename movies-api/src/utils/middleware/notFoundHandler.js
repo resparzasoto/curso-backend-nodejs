@@ -1,4 +1,4 @@
-const Boom = require('@hapi/Boom');
+const Boom = require('@hapi/boom');
 const response = require('../../network/response');
 
 function notFoundHandler(req, res) {

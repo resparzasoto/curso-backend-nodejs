@@ -1,4 +1,4 @@
-const Boom = require('@hapi/Boom');
+const Boom = require('@hapi/boom');
 
 const { config } = require('../../config');
 const response = require('../../network/response');

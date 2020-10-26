@@ -1,5 +1,5 @@
-const Boom = require('@hapi/Boom');
-const Joi = require('@hapi/Joi');
+const Boom = require('@hapi/boom');
+const Joi = require('@hapi/joi');
 
 function validate(data, schema) {
     const { error } = Joi.object(schema).validate(data);
